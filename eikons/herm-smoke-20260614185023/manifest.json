@@ -1,0 +1,11 @@
+{
+  "name": "herm-smoke-20260614185023",
+  "version": 1,
+  "states": {},
+  "display": {
+    "title": "herm-smoke-20260614185023",
+    "author": "Herm smoke",
+    "description": "Temporary public smoke test for the Herm Eikon submit flow.",
+    "glyph": "◆"
+  }
+}
