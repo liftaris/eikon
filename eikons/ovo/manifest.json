@@ -1,0 +1,11 @@
+{
+  "name": "ovo",
+  "version": 1,
+  "states": {},
+  "display": {
+    "title": "ovo",
+    "author": "kaio",
+    "description": "Monochrome terminal avatar.",
+    "glyph": "◆"
+  }
+}
