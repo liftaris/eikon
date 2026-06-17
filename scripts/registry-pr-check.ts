@@ -34,6 +34,18 @@ function packageParts(entry: Entry): { namespace: string; name: string } | undef
   return name ? { namespace: "liftaris", name } : undefined
 }
 
+function sameEntry(a: Entry | undefined, b: Entry): boolean {
+  return JSON.stringify(a ?? null) === JSON.stringify(b)
+}
+
+function scopedTo(entry: Entry, path: string): boolean {
+  const name = typeof entry.name === "string" ? entry.name : undefined
+  const parts = packageParts(entry)
+  return path === "eikons/index.json"
+    || !!name && path.startsWith(`eikons/${name}/`)
+    || !!parts && path.startsWith(`packages/${parts.namespace}/${parts.name}/`)
+}
+
 export function validate(plan: Plan): string[] {
   const base = parseIndex(plan.baseIndex, "base index")
   const current = parseIndex(plan.index, "current index")
@@ -55,16 +67,20 @@ export function validate(plan: Plan): string[] {
   }
 
   const errors: string[] = []
+  const baseByKey = new Map(base.map(entry => [key(entry), entry]))
+  const changedEntries = current.filter(entry => !sameEntry(baseByKey.get(key(entry)), entry))
 
   for (const entry of base) {
     if (!currentKeys.has(key(entry))) {
-      errors.push(`Catalog index must not remove existing entry '${display(entry)}' in a submit PR; use the delist flow.`)
+      errors.push(`Catalog index must not remove existing entry '${display(entry)}' in a submit/update PR; use the delist flow.`)
     }
   }
 
   const deleted = plan.files.filter(file => file.status.includes("D") || file.status.includes("R"))
   for (const file of deleted) {
-    errors.push(`Submit PR must not delete registry files: ${file.path}`)
+    if (!changedEntries.some(entry => scopedTo(entry, file.path))) {
+      errors.push(`Registry file deletions in submit/update PRs must stay scoped to the changed Eikon/package: ${file.path}`)
+    }
   }
 
   for (const entry of current) {

@@ -56,9 +56,25 @@ describe("registry PR validation", () => {
     expect(errors.join("\n")).toContain("must include packages/liftaris/nous-cat/ artifacts")
   })
 
-  test("rejects destructive file changes in submit PRs", () => {
+  test("allows update PRs to replace blobs scoped to the changed package", () => {
+    const updated = JSON.stringify([
+      { kind: "eikon.catalog.entry", id: "liftaris/ares", name: "ares", packageUrl: "https://eikon.liftaris.dev/packages/liftaris/ares/1.0.0.json" },
+      { kind: "eikon.catalog.entry", id: "liftaris/ovo", name: "ovo", packageUrl: "https://eikon.liftaris.dev/packages/liftaris/ovo/1.0.0.json", trust: { runtimeDigest: "sha256:new" } },
+    ])
+    expect(validate(plan({
+      index: updated,
+      files: [
+        { status: "M", path: "eikons/index.json" },
+        { status: "M", path: "packages/liftaris/ovo/1.0.0.json" },
+        { status: "D", path: "packages/liftaris/ovo/blobs/sha256/old" },
+        { status: "A", path: "packages/liftaris/ovo/blobs/sha256/new" },
+      ],
+    }))).toEqual([])
+  })
+
+  test("rejects destructive file changes outside changed Eikon/package scope", () => {
     const errors = validate(plan({ files: [...goodFiles, { status: "D", path: "eikons/ares/manifest.json" }] }))
-    expect(errors.join("\n")).toContain("must not delete registry files")
+    expect(errors.join("\n")).toContain("must stay scoped")
   })
 
   test("allows strict delist PRs to be handled by the delist workflow", () => {

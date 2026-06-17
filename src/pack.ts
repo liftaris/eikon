@@ -31,7 +31,7 @@ export type Knobs = {
 
 export const DEFAULTS: Knobs = {
   width: 48, height: 24, fps: 16,
-  symbols: "block", colors: "none", dither: "none", invert: true,
+  symbols: "braille", colors: "none", dither: "none", invert: true,
 }
 
 const IMG = new Set([".png", ".jpg", ".jpeg", ".webp", ".bmp"])
