@@ -43,11 +43,11 @@
       "path": "nous-cat.eikon",
       "role": "runtime",
       "mediaType": "application/vnd.eikon.stream+jsonl",
-      "size": 109798,
-      "digest": "sha256:6d2c4599967a2c37ab611fe779fe6b7b3abfc40d70dda5fd822d6cd3dbc154f1",
+      "size": 188892,
+      "digest": "sha256:a048c637fde1e987cb2b3e951c359aac70f7623082d96ee182d1bbffa2c36a65",
       "encoding": "gzip",
-      "decodedSize": 1500538,
-      "decodedDigest": "sha256:884b4f598be8022523d5893940aacfa8f9bc8b3bc99bf57549fe1b5b87cdc5dc"
+      "decodedSize": 2085576,
+      "decodedDigest": "sha256:24b192b3cdf2d366ee06d6e5056d174e8aa8abc17ee842462fb8be10385fbf22"
     },
     {
       "path": "base.png",

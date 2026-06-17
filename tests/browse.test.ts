@@ -6,6 +6,8 @@ import { emit, picks, MARK } from "../src/browse/ipc"
 import { decodeRuntimeFile } from "../src"
 
 const dir = resolve(import.meta.dir, "../eikons")
+const blockChars = /[█▉▊▋▌▍▎▏▐▔▀▄▁▂▃▅▆▇▖▗▘▙▚▛▜▝▞▟]/
+const hasBraille = (text: string) => [...text].some(c => c.charCodeAt(0) >= 0x2800 && c.charCodeAt(0) <= 0x28ff)
 
 test("parse: real catalog files round-trip via list+parse", () => {
   const found = list([dir])
@@ -22,6 +24,14 @@ test("parse: ares has 6 canonical states and a poster", () => {
   const e = parse(raw)
   for (const s of STATES) expect(e.clips.has(s)).toBe(true)
   expect(poster(e).split("\n").length).toBe(24)
+})
+
+test("parse: checked-in nous-cat uses braille glyphs like the default catalog eikons", () => {
+  const raw = decodeRuntimeFile(resolve(dir, "nous-cat/nous-cat.eikon"))
+  const e = parse(raw)
+  const rows = e.clips.get("idle")!.frames[0]!.join("\n")
+  expect(hasBraille(rows)).toBe(true)
+  expect(blockChars.test(rows)).toBe(false)
 })
 
 test("catalog.local: list() returns entries with posters, load() returns raw bytes", async () => {

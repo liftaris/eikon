@@ -1,10 +1,10 @@
 ## Eikon submission
 
-If this PR submits a new Eikon, complete this checklist.
+If this PR submits or updates an Eikon, complete this checklist.
 
 ### Source
 
-- [ ] This PR adds exactly one Eikon: `<name>`
+- [ ] This PR adds or updates exactly one Eikon: `<name>`
 - [ ] Editable source media is included when the Eikon should be editable in Studio
 - [ ] The bundle contains no secrets, private URLs, local paths, or token-shaped strings
 

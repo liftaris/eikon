@@ -33,6 +33,8 @@ test.skipIf(skip)("pack: single image → 6 identical 1-frame states, lint-clean
   const f0 = doc.states[0]!.frames[0]!.data
   expect(doc.states.every(s => s.frames[0]!.data === f0)).toBe(true)
   expect(f0.split("\n").length).toBe(doc.header.height)
+  expect([...f0].some(c => c.charCodeAt(0) >= 0x2800 && c.charCodeAt(0) <= 0x28ff)).toBe(true)
+  expect(/[█▉▊▋▌▍▎▏▐▔▀▄▁▂▃▅▆▇▖▗▘▙▚▛▜▝▞▟]/.test(f0)).toBe(false)
 })
 
 test.skipIf(skip)("pack: gzip writer emits deterministic parseable bytes", () => {

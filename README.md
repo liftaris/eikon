@@ -78,7 +78,8 @@ dir/
 ```
 
 Flags: `--width 48 --height 24 --fps 16 --symbols block|braille|ascii|sextant
---colors none|256|full --no-invert --author NAME`. Requires `chafa`;
+--colors none|256|full --no-invert --author NAME`. The default symbol set is
+braille, matching the public catalog avatars. Requires `chafa`;
 `ffmpeg` for video/gif.
 
 For interactive tuning (pan/zoom/knobs/live preview), open Herm's Eikon →
